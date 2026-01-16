@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 07, 2026 at 07:20 AM
+-- Generation Time: Jan 16, 2026 at 03:55 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -31,15 +31,16 @@ CREATE TABLE `admin` (
   `id_admin` int NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `nama_lengkap` varchar(100) NOT NULL
+  `nama_lengkap` varchar(100) NOT NULL,
+  `nip` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id_admin`, `username`, `password`, `nama_lengkap`) VALUES
-(1, 'admin', '$2y$10$fdUE.iv5VVN28PAMuzqUyOA3YZCft2uEhQvzPkST3yURf/kct0H5a', 'Admin DKP3');
+INSERT INTO `admin` (`id_admin`, `username`, `password`, `nama_lengkap`, `nip`) VALUES
+(1, 'admin', '$2y$10$fdUE.iv5VVN28PAMuzqUyOA3YZCft2uEhQvzPkST3yURf/kct0H5a', 'Rabiatul Adwiyah', '19760830 2007012102');
 
 -- --------------------------------------------------------
 
@@ -61,7 +62,12 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `id_kategori`, `nama_barang`, `satuan`, `stok`, `foto`) VALUES
-(4, 2, 'Pensil 2B', 'Kotak', 20, 'barang_695d939591467.jpg');
+(4, 2, 'Pensil 2B', 'Kotak', 30, 'barang_695d939591467.jpg'),
+(5, 4, 'Printer ', 'box', 20, 'barang_696784eba401f.jpg'),
+(6, 1, 'Kertas A4 Sidu', 'Rim', 0, 'barang_69686f51a49e5.jpg'),
+(7, 1, 'A4 a1ne', 'Rim', 30, 'barang_69686fe5c0eb1.png'),
+(8, 3, 'Map kertas', 'Pcs', 30, 'barang_69687042adb23.png'),
+(10, 5, 'Kursi Kantor', 'Unit', 10, 'barang_69698ce7d979e.jpeg');
 
 -- --------------------------------------------------------
 
@@ -78,6 +84,15 @@ CREATE TABLE `barang_keluar` (
   `keterangan` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `barang_keluar`
+--
+
+INSERT INTO `barang_keluar` (`id_keluar`, `id_barang`, `tanggal`, `jumlah`, `penerima`, `keterangan`) VALUES
+(4, 5, '2026-01-15', 5, 'BIdang Perikanan', ''),
+(5, 6, '2026-01-15', 20, 'BIdang Perikanan', 'Untuk Print'),
+(6, 7, '2026-01-16', 20, 'BIdang Perikanan', 'Kekurangan Kertas');
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +106,14 @@ CREATE TABLE `barang_masuk` (
   `jumlah` int NOT NULL,
   `keterangan` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `barang_masuk`
+--
+
+INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `tanggal`, `jumlah`, `keterangan`) VALUES
+(3, 4, '2026-01-14', 10, 'Untuk Pengadaan'),
+(4, 5, '2026-01-16', 5, 'Penambahan Barang');
 
 -- --------------------------------------------------------
 
@@ -113,6 +136,30 @@ INSERT INTO `kategori` (`id_kategori`, `nama_kategori`) VALUES
 (3, 'Map & File'),
 (4, 'Elektronik'),
 (5, 'Lain-lain');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `riwayat_barang`
+--
+
+CREATE TABLE `riwayat_barang` (
+  `id_riwayat` int NOT NULL,
+  `nama_user` varchar(100) DEFAULT NULL,
+  `nip` varchar(30) DEFAULT NULL,
+  `nama_barang` varchar(100) DEFAULT NULL,
+  `jenis_aktivitas` enum('masuk','keluar') DEFAULT NULL,
+  `jumlah` int DEFAULT NULL,
+  `tanggal` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `riwayat_barang`
+--
+
+INSERT INTO `riwayat_barang` (`id_riwayat`, `nama_user`, `nip`, `nama_barang`, `jenis_aktivitas`, `jumlah`, `tanggal`) VALUES
+(1, 'Rabiatul Adwiyah', '19760830 2007012102', 'Kursi Kantor', 'masuk', 10, '2026-01-16 00:00:00'),
+(2, 'Rabiatul Adwiyah', '19760830 2007012102', 'A4 a1ne', 'keluar', 20, '2026-01-16 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -152,6 +199,12 @@ ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id_kategori`);
 
 --
+-- Indexes for table `riwayat_barang`
+--
+ALTER TABLE `riwayat_barang`
+  ADD PRIMARY KEY (`id_riwayat`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -165,25 +218,31 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id_keluar` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_keluar` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id_masuk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_masuk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
   MODIFY `id_kategori` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `riwayat_barang`
+--
+ALTER TABLE `riwayat_barang`
+  MODIFY `id_riwayat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

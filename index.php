@@ -94,9 +94,8 @@
                 <i class="bi bi-speedometer2 me-2"></i>Dashboard
             </h2>
             <p class="text-muted mb-0">
-                <i class="bi bi-person-circle me-1"></i>
-                Selamat Datang, <strong class="text-success"><?= $_SESSION['nama']; ?></strong>!
-            </p>
+            Selamat datang, <strong><?= $_SESSION['nama_admin']; ?></strong>!
+        </p>
         </div>
         <div>
             <span class="badge badge-date text-white">
