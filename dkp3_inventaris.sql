@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 21, 2026 at 10:57 AM
+-- Generation Time: Jan 27, 2026 at 12:12 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,27 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `dkp3_inventaris`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin`
---
-
-CREATE TABLE `admin` (
-  `id_admin` int NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `nama_lengkap` varchar(100) NOT NULL,
-  `nip` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`id_admin`, `username`, `password`, `nama_lengkap`, `nip`) VALUES
-(1, 'admin', '$2y$10$fdUE.iv5VVN28PAMuzqUyOA3YZCft2uEhQvzPkST3yURf/kct0H5a', 'Rabiatul Adwiyah', '19760830 2007012102');
 
 -- --------------------------------------------------------
 
@@ -67,8 +46,9 @@ INSERT INTO `barang` (`id_barang`, `id_kategori`, `nama_barang`, `satuan`, `stok
 (6, 1, 'Kertas A4 Sidu', 'Rim', 40, 'barang_69686f51a49e5.jpg'),
 (7, 1, 'A4 a1ne', 'Rim', 10, 'barang_69686fe5c0eb1.png'),
 (8, 3, 'Map kertas', 'Pcs', 30, 'barang_69687042adb23.png'),
-(10, 5, 'Kursi Kantor', 'Unit', 8, 'barang_69698ce7d979e.jpeg'),
-(11, 2, 'Pulpen M&G Stick Gel Pen 0.38mm', 'box', 30, 'barang_69703ea018907.jpg');
+(10, 5, 'Kursi Kantor', 'Unit', 10, 'barang_69698ce7d979e.jpeg'),
+(11, 2, 'Pulpen M&G Stick Gel Pen 0.38mm', 'box', 30, 'barang_69703ea018907.jpg'),
+(12, 2, 'Spidol whiteboard', 'Pcs', 10, 'barang_69783429148a2.jpg');
 
 -- --------------------------------------------------------
 
@@ -119,7 +99,8 @@ INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `tanggal`, `jumlah`, `keter
 (3, 4, '2026-01-14', 10, 'Untuk Pengadaan'),
 (4, 5, '2026-01-16', 5, 'Penambahan Barang'),
 (5, 6, '2026-01-20', 40, 'STOK TIPIS'),
-(6, 4, '2026-01-20', 10, 'Cadangan');
+(6, 4, '2026-01-20', 10, 'Cadangan'),
+(7, 10, '2026-01-27', 2, '');
 
 -- --------------------------------------------------------
 
@@ -164,7 +145,9 @@ CREATE TABLE `pengguna` (
 
 INSERT INTO `pengguna` (`id_pengguna`, `nama_lengkap`, `nip`, `username`, `password`, `level`) VALUES
 (5, 'Abu Yajid Bustami, S.Sos, M.AP', '196607111987031005', 'Abuyajid01', '$2y$10$4ajWIugKyfqP/UZTQ7BT5ucUbXEL45qWCPbKWqL.jePma1SYwsLXS', 'pimpinan'),
-(6, 'Noris', '123546338945785764', 'Noris01', '$2y$10$h8CqEjwx9Lufy4VlFypjaekmd.2LHkTQ/FbJocDqVc69/XaEBB40i', 'petugas');
+(6, 'Noris', '123546338945785764', 'Noris01', '$2y$10$h8CqEjwx9Lufy4VlFypjaekmd.2LHkTQ/FbJocDqVc69/XaEBB40i', 'petugas'),
+(7, 'budi Santoso', '8389236482', 'budi01', '$2y$10$eU5UbtdOzzVrHw7isV0rS.ejPFB/4SKbBNWbo3GPFVG5ir9XO6d1m', 'admin'),
+(8, 'Rabiatul Adwiyah', '19760830 2007012102', 'admin', '$2y$10$fdUE.iv5VVN28PAMuzqUyOA3YZCft2uEhQvzPkST3yURf/kct0H5a', 'admin');
 
 -- --------------------------------------------------------
 
@@ -190,17 +173,13 @@ INSERT INTO `riwayat_barang` (`id_riwayat`, `nama_user`, `nip`, `nama_barang`, `
 (1, 'Rabiatul Adwiyah', '19760830 2007012102', 'Kursi Kantor', 'masuk', 10, '2026-01-16 00:00:00'),
 (2, 'Rabiatul Adwiyah', '19760830 2007012102', 'A4 a1ne', 'keluar', 20, '2026-01-16 00:00:00'),
 (7, 'Noris', '123546338945785764', 'A4 a1ne', 'keluar', 20, '2026-01-20 00:00:00'),
-(8, 'Rabiatul Adwiyah', '19760830 2007012102', 'Pulpen M&G Stick Gel Pen 0.38mm', 'masuk', 30, '2026-01-21 00:00:00');
+(8, 'Rabiatul Adwiyah', '19760830 2007012102', 'Pulpen M&G Stick Gel Pen 0.38mm', 'masuk', 30, '2026-01-21 00:00:00'),
+(9, 'budi Santoso', '8389236482', 'Spidol whiteboard', 'masuk', 10, '2026-01-27 00:00:00'),
+(10, 'budi Santoso', '8389236482', 'Kursi Kantor', 'masuk', 2, '2026-01-27 00:00:00');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id_admin`);
 
 --
 -- Indexes for table `barang`
@@ -246,16 +225,10 @@ ALTER TABLE `riwayat_barang`
 --
 
 --
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id_admin` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_barang` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `barang_keluar`
@@ -267,7 +240,7 @@ ALTER TABLE `barang_keluar`
 -- AUTO_INCREMENT for table `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id_masuk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_masuk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -279,13 +252,13 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_pengguna` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `riwayat_barang`
 --
 ALTER TABLE `riwayat_barang`
-  MODIFY `id_riwayat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_riwayat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

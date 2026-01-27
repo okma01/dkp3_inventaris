@@ -6,60 +6,39 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 // ====================================================
-// 1. CEK UNTUK ADMIN (Tabel admin)
+// LOGIKA BARU: Cek hanya di tabel 'pengguna'
 // ====================================================
-$login_admin = mysqli_query($koneksi, "SELECT * FROM admin WHERE username='$username'");
-$cek_admin = mysqli_num_rows($login_admin);
 
-if($cek_admin > 0){
-    $row = mysqli_fetch_assoc($login_admin);
+// Menggunakan prepared statement untuk keamanan (mencegah SQL Injection)
+$query = mysqli_query($koneksi, "SELECT * FROM pengguna WHERE username='$username'");
+$cek = mysqli_num_rows($query);
 
-    if(password_verify($password, $row['password'])){
-        
-        // SET SESSION ADMIN
-        $_SESSION['id_admin']   = $row['id_admin'];
-        $_SESSION['username']   = $row['username'];
-        $_SESSION['nama_admin'] = $row['nama_lengkap'];
-        
-        // PASTIIN INI ADA (Agar NIP Admin terbaca)
-        $_SESSION['nip']        = $row['nip']; 
-        
-        $_SESSION['level']      = "admin"; 
-        $_SESSION['status']     = "login";
+if($cek > 0){
+    $data = mysqli_fetch_assoc($query);
 
-        header("location:../index.php");
-        exit;
-    }
-}
-
-// ====================================================
-// 2. CEK UNTUK PETUGAS/PIMPINAN (Tabel pengguna)
-// ====================================================
-$login_pengguna = mysqli_query($koneksi, "SELECT * FROM pengguna WHERE username='$username'");
-$cek_pengguna = mysqli_num_rows($login_pengguna);
-
-if($cek_pengguna > 0){
-    $row = mysqli_fetch_assoc($login_pengguna);
-
-    if(password_verify($password, $row['password'])){
+    // Verifikasi password (menggunakan hash)
+    if(password_verify($password, $data['password'])){
         
-        // SET SESSION PETUGAS/PIMPINAN
-        $_SESSION['id_pengguna'] = $row['id_pengguna'];
-        $_SESSION['username']    = $row['username'];
-        $_SESSION['nama_admin']  = $row['nama_lengkap']; 
-        
-        // PASTIIN INI JUGA ADA (Agar NIP Petugas terbaca)
-        $_SESSION['nip']         = $row['nip']; 
-        
-        $_SESSION['level']       = $row['level']; 
+        // SET SESSION
+        // Gunakan nama variabel session yang sama agar tidak merusak halaman lain
+        $_SESSION['id_pengguna'] = $data['id_pengguna'];
+        $_SESSION['username']    = $data['username'];
+        $_SESSION['nama_admin']  = $data['nama_lengkap']; // Di file lain mungkin memanggil 'nama_admin'
+        $_SESSION['nip']         = $data['nip'];
+        $_SESSION['level']       = $data['level']; // admin, petugas, atau pimpinan
         $_SESSION['status']      = "login";
 
+        // Redirect ke dashboard
         header("location:../index.php");
         exit;
+    } else {
+        // Password salah
+        header("location:../login.php?pesan=gagal");
+        exit;
     }
+} else {
+    // Username tidak ditemukan
+    header("location:../login.php?pesan=gagal");
+    exit;
 }
-
-// Jika gagal di kedua tabel
-header("location:../login.php?pesan=gagal");
-exit;
 ?>
