@@ -1,17 +1,8 @@
 <?php
-session_start();
-include '../config/koneksi.php';
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_roles(['admin']);
 
-// --- PENGAMAN UTAMA ---
-// Jika level BUKAN 'admin', tolak paksa!
-if (!isset($_SESSION['level']) || $_SESSION['level'] != 'admin') {
-    echo "<script>
-            alert('AKSES DITOLAK! Anda tidak memiliki izin menghapus riwayat.');
-            window.location='../pages/riwayat.php';
-          </script>";
-    exit; // Stop program di sini
-}
-// ----------------------
+include '../config/koneksi.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

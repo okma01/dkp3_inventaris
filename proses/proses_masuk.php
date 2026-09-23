@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_roles(['admin', 'petugas']);
+
 include '../config/koneksi.php';
 
 if (isset($_POST['simpan_masuk'])) {

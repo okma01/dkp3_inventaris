@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe Lengkap - DKP3 Inventaris</title>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --stroke: #2c2c2c;
+            --bg: #ffffff;
+            --line-width: 2px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            color: var(--stroke);
+        }
+
+        /* Navigasi Atas */
+        .wireframe-nav {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .wireframe-nav button {
+            background: #fff;
+            border: var(--line-width) solid var(--stroke);
+            padding: 8px 15px;
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.1s;
+        }
+
+        .wireframe-nav button:active,
+        .wireframe-nav button.active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            background: #2c2c2c;
+            color: white;
+        }
+
+        /* Container Layar */
+        .screen-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border: var(--line-width) solid var(--stroke);
+            min-height: 800px;
+            display: none;
+            position: relative;
+            box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .screen-container.active {
+            display: flex;
+        }
+
+        /* General UI Elements */
+        .wf-btn {
+            border: var(--line-width) solid var(--stroke);
+            padding: 5px 15px;
+            background: white;
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .wf-input {
+            border: var(--line-width) solid var(--stroke);
+            padding: 8px;
+            background: white;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .wf-select {
+            border: var(--line-width) solid var(--stroke);
+            padding: 8px;
+            background: white;
+            width: 100%;
+            margin-bottom: 10px;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+        }
+
+        .wf-placeholder-img {
+            background: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: var(--line-width) dashed var(--stroke);
+            color: var(--stroke);
+        }
+
+        /* Sidebar Styles */
+        .sidebar-wf {
+            width: 250px;
+            border-right: var(--line-width) solid var(--stroke);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .sidebar-header {
+            height: 70px;
+            border-bottom: var(--line-width) solid var(--stroke);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            gap: 10px;
+        }
+
+        .sidebar-menu {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .menu-item.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Main Content Styles */
+        .main-wf {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fafafa;
+        }
+
+        .header-wf {
+            height: 70px;
+            border-bottom: var(--line-width) solid var(--stroke);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .content-wf {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        /* Tables */
+        .table-wf {
+            width: 100%;
+            border-collapse: collapse;
+            border: var(--line-width) solid var(--stroke);
+            background: white;
+            margin-top: 15px;
+        }
+
+        .table-wf th,
+        .table-wf td {
+            border: var(--line-width) solid var(--stroke);
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table-wf th {
+            background: #eee;
+        }
+
+        /* A4 Paper Simulation */
+        .a4-container {
+            padding: 50px;
+            background: #555;
+            display: flex;
+            justify-content: center;
+        }
+
+        .a4-paper {
+            width: 794px;
+            /* A4 width at 96dpi */
+            min-height: 1123px;
+            /* A4 height */
+            background: white;
+            padding: 40px 50px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            font-family: 'Times New Roman', Times, serif;
+            /* Sesuai FPDF Default */
+            color: black;
+        }
+
+        .kop-surat {
+            text-align: center;
+            border-bottom: 3px double black;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .kop-img-box {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 70px;
+            height: 80px;
+            border: 2px dashed #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Patrick Hand', cursive;
+        }
+
+        .kop-text h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .kop-text h3 {
+            margin: 5px 0;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .kop-text p {
+            margin: 2px 0;
+            font-size: 12px;
+        }
+
+        .laporan-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+            text-decoration: underline;
+        }
+
+        .ttd-area {
+            margin-top: 50px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .ttd-box {
+            text-align: center;
+            width: 250px;
+        }
+
+        /* --- SCREEN SPECIFIC STYLES --- */
+
+        /* Login */
+        .login-split {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-left {
+            flex: 1;
+            background: repeating-linear-gradient(45deg, #fff, #fff 10px, #eee 10px, #eee 11px);
+            border-right: var(--line-width) solid var(--stroke);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card-wf {
+            background: white;
+            border: var(--line-width) solid var(--stroke);
+            padding: 15px;
+            height: 100px;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="text-align: center;">DKP3 Inventaris - All Pages Wireframe</h1>
+
+    <div class="wireframe-nav">
+        <button onclick="showScreen('login')" id="nav-login">Login</button>
+        <button onclick="showScreen('dashboard')" id="nav-dashboard" class="active">Dashboard</button>
+        <button onclick="showScreen('barang')" id="nav-barang">Data Barang</button>
+        <button onclick="showScreen('input-barang')" id="nav-input-barang">Input Barang</button>
+        <button onclick="showScreen('masuk')" id="nav-masuk">Barang Masuk</button>
+        <button onclick="showScreen('keluar')" id="nav-keluar">Barang Keluar</button>
+        <button onclick="showScreen('riwayat')" id="nav-riwayat">Riwayat</button>
+        <button onclick="showScreen('laporan')" id="nav-laporan">Laporan</button>
+        <button onclick="showScreen('cetak')" id="nav-cetak" style="background: yellow;">🖨️ Preview Cetak</button>
+        <button onclick="showScreen('pengguna')" id="nav-pengguna">Pengguna</button>
+        <button onclick="showScreen('input-pengguna')" id="nav-input-pengguna">Input Pengguna</button>
+        <button onclick="showScreen('profile')" id="nav-profile">Profile</button>
+    </div>
+
+    <!-- 1. LOGIN -->
+    <div id="screen-login" class="screen-container">
+        <div class="login-split">
+            <div class="login-left">
+                <div class="wf-placeholder-img"
+                    style="width: 120px; height: 120px; border-radius: 50%; margin-bottom: 20px;">LOGO</div>
+                <h2>DKP3 INVENTARIS</h2>
+            </div>
+            <div class="login-right">
+                <h2>Selamat Datang</h2>
+                <br>
+                <label>Username</label>
+                <input type="text" class="wf-input" placeholder="admin">
+
+                <label>Password</label>
+                <input type="password" class="wf-input" placeholder="********">
+
+                <div style="margin-top: 20px;">
+                    <div class="wf-btn" style="width: 100%; background: #2c2c2c; color: white;">MASUK</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. DASHBOARD -->
+    <div id="screen-dashboard" class="screen-container active">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item active">🏠 Dashboard</div>
+                <div class="menu-item">📦 Data Barang</div>
+                <div class="menu-item">👥 Data Pengguna</div>
+                <hr style="border-top: 2px solid #2c2c2c;">
+                <div class="menu-item">⬇️ Barang Masuk</div>
+                <div class="menu-item">⬆️ Barang Keluar</div>
+                <div class="menu-item">📄 Laporan</div>
+                <div class="menu-item">clock Riwayat</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Dashboard</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <div class="stats-grid">
+                    <div class="stat-card-wf">
+                        <h3>185</h3><small>Total Barang</small>
+                    </div>
+                    <div class="stat-card-wf">
+                        <h3>67</h3><small>Barang Masuk</small>
+                    </div>
+                    <div class="stat-card-wf">
+                        <h3>52</h3><small>Barang Keluar</small>
+                    </div>
+                    <div class="stat-card-wf">
+                        <h3>5</h3><small>Stok Menipis</small>
+                    </div>
+                </div>
+
+                <div style="border: 2px solid #2c2c2c; height: 300px; padding: 20px; background: white;">
+                    <h4>Statistik Stok per Kategori</h4>
+                    <div style="display: flex; align-items: flex-end; height: 200px; gap: 20px; padding-top: 20px;">
+                        <div style="width: 50px; height: 80%; background: #ddd; border: 2px solid #2c2c2c;"></div>
+                        <div style="width: 50px; height: 40%; background: #ddd; border: 2px solid #2c2c2c;"></div>
+                        <div style="width: 50px; height: 90%; background: #ddd; border: 2px solid #2c2c2c;"></div>
+                        <div style="width: 50px; height: 60%; background: #ddd; border: 2px solid #2c2c2c;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. DATA BARANG -->
+    <div id="screen-barang" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">🏠 Dashboard</div>
+                <div class="menu-item active">📦 Data Barang</div>
+                <div class="menu-item">👥 Data Pengguna</div>
+                <hr style="border-top: 2px solid #2c2c2c;">
+                <div class="menu-item">⬇️ Barang Masuk</div>
+                <div class="menu-item">⬆️ Barang Keluar</div>
+                <div class="menu-item">📄 Laporan</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Data Barang</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <div style="display: flex; justify-content: space-between;">
+                    <button class="wf-btn" style="background: #2c2c2c; color: white;"
+                        onclick="showScreen('input-barang')">+ Tambah Barang</button>
+                    <input type="text" class="wf-input" style="width: 200px;" placeholder="Cari...">
+                </div>
+                <table class="table-wf">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Foto</th>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Stok</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>[IMG]</td>
+                            <td>Pensil 2B</td>
+                            <td>Alat Tulis</td>
+                            <td>35</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>[IMG]</td>
+                            <td>Kertas A4</td>
+                            <td>Kertas</td>
+                            <td>40</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>[IMG]</td>
+                            <td>Printer</td>
+                            <td>Elektronik</td>
+                            <td>5</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>[IMG]</td>
+                            <td>Map File</td>
+                            <td>Map</td>
+                            <td>30</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.5 INPUT DATA BARANG -->
+    <div id="screen-input-barang" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">🏠 Dashboard</div>
+                <div class="menu-item active">📦 Data Barang</div>
+                <div class="menu-item">👥 Data Pengguna</div>
+                <hr style="border-top: 2px solid #2c2c2c;">
+                <div class="menu-item">⬇️ Barang Masuk</div>
+                <div class="menu-item">⬆️ Barang Keluar</div>
+                <div class="menu-item">📄 Laporan</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Input Data Barang</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <button class="wf-btn" onclick="showScreen('barang')">← Kembali</button>
+                <br><br>
+                <div style="border: 2px solid #2c2c2c; padding: 30px; background: white; max-width: 800px;">
+                    <h2 style="margin-top: 0;">Form Tambah Barang Baru</h2>
+                    <p style="border-bottom: 2px solid #2c2c2c; padding-bottom: 10px; margin-bottom: 20px;">Isi data
+                        barang inventaris baru</p>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                        <!-- Kolom Input -->
+                        <div>
+                            <label>Nama Barang</label>
+                            <input type="text" class="wf-input" placeholder="Contoh: Laptop ASUS ROG">
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <label>Kategori</label>
+                                    <select class="wf-select">
+                                        <option>- Pilih Kategori -</option>
+                                        <option>Elektronik</option>
+                                        <option>Alat Tulis</option>
+                                        <option>Kertas</option>
+                                        <option>Lain-lain</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Satuan</label>
+                                    <input type="text" class="wf-input" placeholder="Unit/Pcs/Box">
+                                </div>
+                            </div>
+
+                            <label>Stok Awal</label>
+                            <div
+                                style="display: flex; align-items: center; border: 2px solid #2c2c2c; background: white; padding: 5px;">
+                                <span style="padding: 0 10px; font-weight: bold;">📦</span>
+                                <input type="number" style="border: none; width: 100%; outline: none;" placeholder="0">
+                            </div>
+                            <small>Stok awal akan dicatat sebagai barang masuk.</small>
+                        </div>
+
+                        <!-- Kolom Upload Foto -->
+                        <div>
+                            <label>Foto Barang (Opsional)</label>
+                            <div
+                                style="border: 2px dashed #2c2c2c; background: #f9f9f9; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; cursor: pointer;">
+                                <div style="font-size: 3rem;">📷</div>
+                                <span>Klik untuk upload foto</span>
+                                <small style="margin-top: 10px;">Format: JPG/PNG</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; text-align: right; border-top: 2px solid #eee; padding-top: 20px;">
+                        <button class="wf-btn" onclick="showScreen('barang')">Batal</button>
+                        <button class="wf-btn" style="background: #2c2c2c; color: white;">Simpan Data Barang</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. BARANG MASUK -->
+    <div id="screen-masuk" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">🏠 Dashboard</div>
+                <div class="menu-item">📦 Data Barang</div>
+                <div class="menu-item">👥 Data Pengguna</div>
+                <hr style="border-top: 2px solid #2c2c2c;">
+                <div class="menu-item active">⬇️ Barang Masuk</div>
+                <div class="menu-item">⬆️ Barang Keluar</div>
+                <div class="menu-item">📄 Laporan</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Barang Masuk</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <div style="border: 2px solid #2c2c2c; padding: 20px; background: white; margin-bottom: 20px;">
+                    <h4>Input Barang Masuk</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Tanggal</label>
+                            <input type="date" class="wf-input">
+                        </div>
+                        <div>
+                            <label>Pilih Barang</label>
+                            <select class="wf-select">
+                                <option>Pensil 2B</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Jumlah Masuk</label>
+                            <input type="number" class="wf-input">
+                        </div>
+                        <div>
+                            <label>Keterangan</label>
+                            <input type="text" class="wf-input">
+                        </div>
+                    </div>
+                    <button class="wf-btn" style="background: #2c2c2c; color: white; margin-top: 10px;">Simpan
+                        Transaksi</button>
+                </div>
+
+                <h4>Riwayat Masuk Terakhir</h4>
+                <table class="table-wf">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Ket</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>29-01-2026</td>
+                            <td>Pensil 2B</td>
+                            <td>+10</td>
+                            <td>Stok baru</td>
+                            <td>🗑️</td>
+                        </tr>
+                        <tr>
+                            <td>28-01-2026</td>
+                            <td>Kertas A4</td>
+                            <td>+20</td>
+                            <td>Pengadaan</td>
+                            <td>🗑️</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. BARANG KELUAR -->
+    <div id="screen-keluar" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">🏠 Dashboard</div>
+                <div class="menu-item">📦 Data Barang</div>
+                <div class="menu-item">👥 Data Pengguna</div>
+                <hr style="border-top: 2px solid #2c2c2c;">
+                <div class="menu-item">⬇️ Barang Masuk</div>
+                <div class="menu-item active">⬆️ Barang Keluar</div>
+                <div class="menu-item">📄 Laporan</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Barang Keluar</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <div style="border: 2px solid #2c2c2c; padding: 20px; background: white; margin-bottom: 20px;">
+                    <h4>Input Barang Keluar</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Tanggal</label>
+                            <input type="date" class="wf-input">
+                        </div>
+                        <div>
+                            <label>Pilih Barang</label>
+                            <select class="wf-select">
+                                <option>Kertas A4</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Jumlah Keluar</label>
+                            <input type="number" class="wf-input">
+                        </div>
+                        <div>
+                            <label>Penerima / Bidang</label>
+                            <input type="text" class="wf-input">
+                        </div>
+                    </div>
+                    <button class="wf-btn" style="background: #2c2c2c; color: white; margin-top: 10px;">Simpan
+                        Transaksi</button>
+                </div>
+
+                <h4>Riwayat Keluar Terakhir</h4>
+                <table class="table-wf">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Penerima</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>29-01-2026</td>
+                            <td>Kertas A4</td>
+                            <td>-5</td>
+                            <td>Bidang Logistik</td>
+                            <td>🗑️</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. RIWAYAT -->
+    <div id="screen-riwayat" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">🏠 Dashboard</div>
+                <div class="menu-item">clock Riwayat</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Riwayat Aktivitas</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <table class="table-wf">
+                    <thead>
+                        <tr>
+                            <th>Waktu</th>
+                            <th>User</th>
+                            <th>Aktivitas</th>
+                            <th>Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>29-01-2026 10:00</td>
+                            <td>Rabiatul</td>
+                            <td>Barang Masuk</td>
+                            <td>Menambah stok Pensil 2B (10)</td>
+                        </tr>
+                        <tr>
+                            <td>29-01-2026 09:30</td>
+                            <td>Noris</td>
+                            <td>Barang Keluar</td>
+                            <td>Mengeluarkan Kertas A4 (5)</td>
+                        </tr>
+                        <tr>
+                            <td>28-01-2026 14:00</td>
+                            <td>Budi</td>
+                            <td>Login</td>
+                            <td>Login ke sistem</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. LAPORAN -->
+    <div id="screen-laporan" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">📄 Laporan</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Cetak Laporan</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                    <!-- Existing Reports -->
+                    <div style="border: 2px solid #2c2c2c; padding: 20px; background: white;">
+                        <h4>Laporan Stok Barang (Semua)</h4>
+                        <p>Cetak semua data stok barang saat ini.</p>
+                        <button class="wf-btn" style="width: 100%;" onclick="showScreen('cetak')">🖨️ Cetak PDF</button>
+                    </div>
+
+                    <div style="border: 2px solid #2c2c2c; padding: 20px; background: white;">
+                        <h4>Laporan Stok Per Kategori</h4>
+                        <label>Pilih Kategori:</label>
+                        <select class="wf-select">
+                            <option>Semua Kategori</option>
+                            <option>Elektronik</option>
+                            <option>Alat Tulis</option>
+                        </select>
+                        <button class="wf-btn" style="width: 100%;">🖨️ Cetak PDF</button>
+                    </div>
+
+                    <div style="border: 2px solid #2c2c2c; padding: 20px; background: white;">
+                        <h4>Laporan Barang Masuk</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div><label>Dari:</label><input type="date" class="wf-input"></div>
+                            <div><label>Sampai:</label><input type="date" class="wf-input"></div>
+                        </div>
+                        <button class="wf-btn" style="width: 100%;">🖨️ Cetak PDF</button>
+                    </div>
+
+                    <div style="border: 2px solid #2c2c2c; padding: 20px; background: white;">
+                        <h4>Laporan Barang Keluar</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div><label>Dari:</label><input type="date" class="wf-input"></div>
+                            <div><label>Sampai:</label><input type="date" class="wf-input"></div>
+                        </div>
+                        <button class="wf-btn" style="width: 100%;">🖨️ Cetak PDF</button>
+                    </div>
+
+                    <!-- New Reports -->
+                    <div style="border: 2px dashed #2c2c2c; padding: 20px; background: #fffbe6;">
+                        <h4>⚠️ Laporan Stok Menipis</h4>
+                        <p>Barang dengan jumlah stok dibawah 5 unit.</p>
+                        <button class="wf-btn" style="width: 100%;">🖨️ Cetak PDF</button>
+                    </div>
+
+                    <div style="border: 2px dashed #2c2c2c; padding: 20px; background: #f0f8ff;">
+                        <h4>📦 Laporan Pengadaan</h4>
+                        <p style="font-size: 0.9em;">Rekapitulasi total pengadaan/masuk barang per periode.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div><label>Dari:</label><input type="date" class="wf-input"></div>
+                            <div><label>Sampai:</label><input type="date" class="wf-input"></div>
+                        </div>
+                        <button class="wf-btn" style="width: 100%;">🖨️ Cetak PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7.5 PREVIEW CETAK (NEW) -->
+    <div id="screen-cetak" class="screen-container a4-container">
+        <div class="a4-paper">
+            <!-- Kop Surat -->
+            <div class="kop-surat">
+                <div class="kop-img-box">IMG</div>
+                <div class="kop-text">
+                    <h2>PEMERINTAH KOTA BANJARBARU</h2>
+                    <h3>DINAS KETAHANAN PANGAN, PERTANIAN DAN PERIKANAN</h3>
+                    <p>Alamat : Jl. Agus Salim, Banjarbaru Telp/ Fax. (0511) 4781050</p>
+                    <p>Website : www.dkp3.banjarbarukota.go.id - E-mail : dkp3@banjarbarukota.go.id</p>
+                </div>
+            </div>
+
+            <!-- Content Check -->
+            <div class="laporan-title">LAPORAN DATA STOK BARANG</div>
+
+            <table class="table-wf" style="font-size: 12px; border-color: black;">
+                <thead>
+                    <tr style="background: #e6e6e6;">
+                        <th style="width: 30px; border-color: black; text-align: center;">No</th>
+                        <th style="border-color: black;">Nama Barang</th>
+                        <th style="width: 100px; border-color: black;">Kategori</th>
+                        <th style="width: 60px; border-color: black; text-align: center;">Satuan</th>
+                        <th style="width: 60px; border-color: black; text-align: center;">Stok</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border-color: black; text-align: center;">1</td>
+                        <td style="border-color: black;">Gunting Kertas</td>
+                        <td style="border-color: black;">Alat Tulis</td>
+                        <td style="border-color: black; text-align: center;">Pcs</td>
+                        <td style="border-color: black; text-align: center;">12</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: black; text-align: center;">2</td>
+                        <td style="border-color: black;">Kertas HVS A4</td>
+                        <td style="border-color: black;">Kertas</td>
+                        <td style="border-color: black; text-align: center;">Rim</td>
+                        <td style="border-color: black; text-align: center;">50</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: black; text-align: center;">3</td>
+                        <td style="border-color: black;">Lakban Hitam</td>
+                        <td style="border-color: black;">Alat Tulis</td>
+                        <td style="border-color: black; text-align: center;">Roll</td>
+                        <td style="border-color: black; text-align: center;">5</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: black; text-align: center;">4</td>
+                        <td style="border-color: black;">Map Plastik</td>
+                        <td style="border-color: black;">Map</td>
+                        <td style="border-color: black; text-align: center;">Buah</td>
+                        <td style="border-color: black; text-align: center;">100</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: black; text-align: center;">5</td>
+                        <td style="border-color: black;">Spidol Boardmarker</td>
+                        <td style="border-color: black;">Alat Tulis</td>
+                        <td style="border-color: black; text-align: center;">Pcs</td>
+                        <td style="border-color: black; text-align: center;">24</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- TTD -->
+            <div class="ttd-area">
+                <div class="ttd-box">
+                    <p>Banjarbaru, 29 Januari 2026</p>
+                    <p>Mengetahui,</p>
+                    <p style="margin-bottom: 50px;">Kepala Dinas</p>
+                    <p style="text-decoration: underline; font-weight: bold;">(
+                        ............................................... )</p>
+                    <p>NIP. 192837192837</p>
+                </div>
+            </div>
+
+            <div
+                style="position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; font-style: italic;">
+                Halaman 1 - Dicetak pada: 29-01-2026 22:30
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. PENGGUNA -->
+    <div id="screen-pengguna" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">👥 Data Pengguna</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Manajemen Pengguna</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <button class="wf-btn" style="background: #2c2c2c; color: white; margin-bottom: 20px;"
+                    onclick="showScreen('input-pengguna')">+ Tambah User</button>
+                <table class="table-wf">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Username</th>
+                            <th>Level</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Rabiatul Adwiyah</td>
+                            <td>admin</td>
+                            <td>Admin</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Budi Santoso</td>
+                            <td>budi01</td>
+                            <td>Petugas</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Kepala Dinas</td>
+                            <td>pimpinan</td>
+                            <td>Pimpinan</td>
+                            <td>✏️ 🗑️</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8.5 INPUT PENGGUNA -->
+    <div id="screen-input-pengguna" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">🏠 Dashboard</div>
+                <div class="menu-item">📦 Data Barang</div>
+                <div class="menu-item active">👥 Data Pengguna</div>
+                <hr style="border-top: 2px solid #2c2c2c;">
+                <div class="menu-item">⬇️ Barang Masuk</div>
+                <div class="menu-item">⬆️ Barang Keluar</div>
+                <div class="menu-item">📄 Laporan</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Input Data Pengguna</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <button class="wf-btn" onclick="showScreen('pengguna')">← Kembali</button>
+                <br><br>
+                <div style="border: 2px solid #2c2c2c; padding: 30px; background: white; max-width: 600px;">
+                    <h2 style="margin-top: 0;">Tambah Pengguna Baru</h2>
+                    <p style="border-bottom: 2px solid #2c2c2c; padding-bottom: 10px; margin-bottom: 20px;">Registrasi
+                        user untuk akses sistem</p>
+
+                    <label>Nama Lengkap</label>
+                    <input type="text" class="wf-input" placeholder="Nama Lengkap User">
+
+                    <label>NIP (Nomor Induk Pegawai)</label>
+                    <input type="text" class="wf-input" placeholder="NIP">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Username</label>
+                            <input type="text" class="wf-input" placeholder="Username login">
+                        </div>
+                        <div>
+                            <label>Password</label>
+                            <input type="password" class="wf-input" placeholder="Password awal">
+                        </div>
+                    </div>
+
+                    <label>Level Akses</label>
+                    <select class="wf-select">
+                        <option value="">- Pilih Level -</option>
+                        <option value="admin">Admin (Full Akses)</option>
+                        <option value="petugas">Petugas (Input & Laporan)</option>
+                        <option value="pimpinan">Pimpinan (View Only)</option>
+                    </select>
+
+                    <div style="margin-top: 30px; text-align: right; border-top: 2px solid #eee; padding-top: 20px;">
+                        <button class="wf-btn" onclick="showScreen('pengguna')">Batal</button>
+                        <button class="wf-btn" style="background: #2c2c2c; color: white;">Simpan User</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. PROFILE -->
+    <div id="screen-profile" class="screen-container">
+        <div class="sidebar-wf">
+            <div class="sidebar-header">📦 DKP3 INV</div>
+            <div class="sidebar-menu">
+                <div class="menu-item">👤 Profile</div>
+            </div>
+        </div>
+        <div class="main-wf">
+            <div class="header-wf">
+                <h3>Edit Profile</h3>
+                <div>👤 Admin</div>
+            </div>
+            <div class="content-wf">
+                <div style="max-width: 500px; border: 2px solid #2c2c2c; padding: 30px; background: white;">
+                    <label>Nama Lengkap</label>
+                    <input type="text" class="wf-input" value="Rabiatul Adwiyah">
+
+                    <label>Username</label>
+                    <input type="text" class="wf-input" value="admin">
+
+                    <label>Ganti Password (Opsional)</label>
+                    <input type="password" class="wf-input" placeholder="Password Baru">
+
+                    <button class="wf-btn" style="background: #2c2c2c; color: white;">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
+            // Remove active state from nav buttons
+            document.querySelectorAll('.wireframe-nav button').forEach(el => el.classList.remove('active'));
+
+            // Show target screen
+            document.getElementById('screen-' + screenId).classList.add('active');
+            // Set nav button active
+            document.getElementById('nav-' + screenId).classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

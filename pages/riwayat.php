@@ -1,4 +1,8 @@
-<?php include '../layout/header.php'; ?>
+<?php
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_roles(['admin', 'petugas']);
+include '../layout/header.php';
+?>
 <?php include '../layout/sidebar.php'; ?>
 
 <style>
@@ -43,31 +47,21 @@
     }
 </style>
 
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row align-items-center mb-4">
-                <div class="col-sm-6">
-                    <h1 class="m-0 fw-bold">Riwayat Aktivitas</h1>
-                    <p class="text-muted small mb-0">Log transaksi barang masuk dan keluar</p>
-                    
-                    <?php if($_SESSION['level'] == 'admin') : ?>
-                        <small class="text-danger fw-bold"><i class="fas fa-user-shield me-1"></i> Mode Admin: Klik Kanan untuk Hapus</small>
-                    <?php endif; ?>
-                    
-                </div>
-                <div class="col-sm-6 text-end">
-                    <a href="cetak_riwayat.php" target="_blank" class="btn btn-danger">
-                        <i class="fas fa-file-pdf me-2"></i>Export PDF
-                    </a>
-                </div>
+<div class="container-fluid p-4">
+    <div class="card card-custom">
+        <div class="card-header-custom">
+            <div>
+                <h4 class="mb-0 fw-bold text-dark">Riwayat Aktivitas</h4>
+                <small class="text-muted">Log transaksi barang masuk dan keluar</small>
+                <?php if($_SESSION['level'] == 'admin') : ?>
+                    <div class="small text-danger fw-bold mt-1"><i class="bi bi-shield-lock me-1"></i> Mode Admin: klik kanan pada baris untuk hapus log</div>
+                <?php endif; ?>
             </div>
+            <a href="cetak_riwayat.php" target="_blank" class="btn btn-danger">
+                <i class="bi bi-file-earmark-pdf me-2"></i>Export PDF
+            </a>
         </div>
-    </section>
 
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card border-0 shadow-sm">
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0" id="tableRiwayat">
@@ -85,9 +79,17 @@
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT id_riwayat, nama_user, nip, nama_barang, jenis_aktivitas, jumlah, tanggal
-                                        FROM riwayat_barang
-                                        ORDER BY tanggal DESC, id_riwayat DESC";
+                                // Admin melihat SEMUA aktivitas, petugas hanya barang masuk/keluar
+                                if ($_SESSION['level'] == 'admin') {
+                                    $sql = "SELECT id_riwayat, nama_user, nip, nama_barang, jenis_aktivitas, jumlah, tanggal
+                                            FROM riwayat_barang
+                                            ORDER BY tanggal DESC, id_riwayat DESC";
+                                } else {
+                                    $sql = "SELECT id_riwayat, nama_user, nip, nama_barang, jenis_aktivitas, jumlah, tanggal
+                                            FROM riwayat_barang
+                                            WHERE jenis_aktivitas IN ('masuk','keluar')
+                                            ORDER BY tanggal DESC, id_riwayat DESC";
+                                }
 
                                 $no = 1;
                                 $result = mysqli_query($koneksi, $sql);
@@ -104,9 +106,27 @@
 
                                         $isMasuk  = $aksi === 'masuk';
                                         $isKeluar = $aksi === 'keluar';
+                                        $isTambahUser = $aksi === 'tambah_pengguna';
+                                        $isHapusUser  = $aksi === 'hapus_pengguna';
+                                        $isUserAction = $isTambahUser || $isHapusUser;
 
-                                        $badgeClass = $isMasuk ? 'bg-success' : 'bg-danger';
-                                        $aksiLabel  = $isMasuk ? 'Masuk' : 'Keluar';
+                                        // Badge warna berdasarkan jenis aktivitas
+                                        if ($isMasuk) {
+                                            $badgeClass = 'bg-success';
+                                            $aksiLabel  = 'Masuk';
+                                        } elseif ($isKeluar) {
+                                            $badgeClass = 'bg-danger';
+                                            $aksiLabel  = 'Keluar';
+                                        } elseif ($isTambahUser) {
+                                            $badgeClass = 'bg-info';
+                                            $aksiLabel  = 'Tambah Pengguna';
+                                        } elseif ($isHapusUser) {
+                                            $badgeClass = 'bg-dark';
+                                            $aksiLabel  = 'Hapus Pengguna';
+                                        } else {
+                                            $badgeClass = 'bg-secondary';
+                                            $aksiLabel  = ucfirst($aksi);
+                                        }
                                         ?>
                                         <tr class="riwayat-row" data-id="<?= $id_riwayat; ?>">
                                             <td class="text-center text-muted"><?= $no++; ?></td>
@@ -117,10 +137,17 @@
                                                     <?= $aksiLabel; ?>
                                                 </span>
                                             </td>
-                                            <td><?= htmlspecialchars($barang); ?></td>
+                                            <td>
+                                                <?php if ($isUserAction): ?>
+                                                    <i class="bi bi-person-fill me-1 text-primary"></i>
+                                                <?php endif; ?>
+                                                <?= htmlspecialchars($barang); ?>
+                                            </td>
                                             <td class="text-end">
                                                 <?php if ($isMasuk): ?>
                                                     <span class="text-success fw-semibold">+<?= number_format($jumlah); ?></span>
+                                                <?php elseif ($isUserAction): ?>
+                                                    <span class="text-muted">-</span>
                                                 <?php else: ?>
                                                     <span class="text-muted">-</span>
                                                 <?php endif; ?>
@@ -128,6 +155,8 @@
                                             <td class="text-end">
                                                 <?php if ($isKeluar): ?>
                                                     <span class="text-danger fw-semibold">-<?= number_format($jumlah); ?></span>
+                                                <?php elseif ($isUserAction): ?>
+                                                    <span class="text-muted">-</span>
                                                 <?php else: ?>
                                                     <span class="text-muted">-</span>
                                                 <?php endif; ?>
@@ -154,8 +183,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 </div>
 
 <?php if($_SESSION['level'] == 'admin') : ?>
@@ -229,16 +256,5 @@
         document.querySelectorAll('.riwayat-row').forEach(r => r.classList.remove('active-context'));
     }
 </script>
-
-<style>
-    .content-wrapper { background-color: #f8f9fa; }
-    .card { border-radius: 12px; overflow: hidden; }
-    .table thead th { font-weight: 600; font-size: 0.875rem; color: #495057; border-bottom: 2px solid #dee2e6; padding: 1rem; }
-    .table tbody td { padding: 1rem; border-bottom: 1px solid #f0f0f0; }
-    .table tbody tr:last-child td { border-bottom: none; }
-    .table-hover tbody tr:hover { background-color: #f8f9fa; }
-    .badge { padding: 0.35rem 0.75rem; font-weight: 500; font-size: 0.75rem; }
-    .btn { padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 500; }
-</style>
 
 <?php include '../layout/footer.php'; ?>

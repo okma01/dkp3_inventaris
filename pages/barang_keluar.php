@@ -42,6 +42,9 @@
                             <th>Jumlah</th>
                             <th>Penerima</th>
                             <th>Keterangan</th>
+                            <?php if($_SESSION['level'] != 'pimpinan') : ?>
+                            <th class="text-center">Aksi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,11 +81,21 @@
                                 </div>
                             </td>
                             <td class="text-muted small fst-italic"><?= $row['keterangan'] ?: '-'; ?></td>
+                            <?php if($_SESSION['level'] != 'pimpinan') : ?>
+                            <td class="text-center">
+                                <a href="../proses/hapus_keluar.php?id=<?= $row['id_keluar']; ?>&idb=<?= $row['id_barang']; ?>&qty=<?= $row['jumlah']; ?>" 
+                                   class="btn btn-sm btn-light text-danger rounded-circle shadow-sm" 
+                                   style="width: 35px; height: 35px; display: inline-flex; align-items: center; justify-content: center;"
+                                   onclick="return confirm('Hapus data ini? Stok barang akan dikembalikan.')">
+                                   <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                            <?php endif; ?>
                         </tr>
                         <?php 
                             }
                         } else {
-                             echo "<tr><td colspan='6' class='text-center py-5 text-muted'>Belum ada data barang keluar.</td></tr>";
+                             echo "<tr><td colspan='7' class='text-center py-5 text-muted'>Belum ada data barang keluar.</td></tr>";
                         }
                         ?>
                     </tbody>

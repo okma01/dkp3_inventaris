@@ -7,6 +7,10 @@ $base_url = isset($base_url) ? $base_url : '../';
 
 // Cek posisi file saat ini untuk menentukan 'active' state menu
 $current_page = basename($_SERVER['PHP_SELF']);
+
+$profile_name = htmlspecialchars($_SESSION['nama_admin'] ?? 'Pengguna', ENT_QUOTES, 'UTF-8');
+$profile_role = htmlspecialchars(ucfirst($_SESSION['level'] ?? 'Pengguna'), ENT_QUOTES, 'UTF-8');
+$profile_nip  = htmlspecialchars($_SESSION['nip'] ?? '-', ENT_QUOTES, 'UTF-8');
 ?>
 
 <div class="sidebar">
@@ -19,12 +23,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 $logo_path = '../assets/logo.png'; 
             }
         ?>
-        <img src="<?= $logo_path ?>" alt="Logo" width="60" class="mb-3">
-        <h5 class="mb-0 fw-bold">DKP3 Inventaris</h5>
+        <div class="d-flex align-items-center">
+            <img src="<?= $logo_path ?>" alt="Logo">
+            <div>
+                <h5 class="mb-1 fw-bold">DKP3 Inventaris</h5>
+                <div class="small">Manajemen stok ATK</div>
+            </div>
+        </div>
     </div>
 
     <div class="mt-2">
-        <small class="text-white-50 px-4 text-uppercase" style="font-size: 11px; letter-spacing: 1px;">Menu Utama</small>
+        <small class="sidebar-section-label">Menu Utama</small>
         
         <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' || $current_page == 'index1.php' ? 'active' : '' ?>">
             <i class="bi bi-grid-fill me-2"></i> Dashboard
@@ -40,7 +49,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
         <?php endif; ?>
 
-        <small class="text-white-50 px-4 mt-4 d-block text-uppercase" style="font-size: 11px; letter-spacing: 1px;">Transaksi</small>
+        <small class="sidebar-section-label">Transaksi</small>
 
         <a href="<?= $base_url ?>pages/barang_masuk.php" class="<?= $current_page == 'barang_masuk.php' ? 'active' : '' ?>">
             <i class="bi bi-arrow-down-circle-fill me-2"></i> Barang Masuk
@@ -50,7 +59,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="bi bi-arrow-up-circle-fill me-2"></i> Barang Keluar
         </a>
 
-        <small class="text-white-50 px-4 mt-4 d-block text-uppercase" style="font-size: 11px; letter-spacing: 1px;">Lainnya</small>
+        <small class="sidebar-section-label">Lainnya</small>
          
         <a href="<?= $base_url ?>pages/laporan.php" class="<?= $current_page == 'laporan.php' ? 'active' : '' ?>">
             <i class="bi bi-file-earmark-text-fill me-2"></i> Laporan
@@ -62,7 +71,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </a>
         <?php endif; ?>
 
-        <div style="margin-top: 50px;">
+        <div class="mt-4 pt-2">
             <a href="<?= $base_url ?>proses/logout.php" class="text-danger mt-4" onclick="return confirm('Yakin ingin keluar?')">
                 <i class="bi bi-power me-2"></i> Logout
             </a>
@@ -72,57 +81,66 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 <div class="content flex-grow-1">
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4 p-3">
+    <nav class="navbar navbar-expand-lg navbar-light app-topbar mb-4 p-3">
         <div class="container-fluid">
-            <button class="btn btn-light border shadow-sm text-primary" id="menu-toggle">
-                <i class="bi bi-list fs-5"></i>
-            </button> 
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light border shadow-sm text-primary" id="menu-toggle" type="button" aria-label="Toggle menu">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+                <div class="topbar-title">
+                    <strong>Inventaris ATK DKP3</strong>
+                    <span><?= date('l, d F Y'); ?></span>
+                </div>
+            </div>
 
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                id="dropdownUser"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
+            <div class="dropdown profile-dropdown">
+                <button class="topbar-profile-trigger dropdown-toggle"
+                        id="dropdownUser"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        aria-label="Buka menu akun <?= $profile_name; ?>">
+                    <span class="topbar-profile-copy d-none d-md-block">
+                        <small>Akun aktif</small>
+                        <strong><?= $profile_name; ?></strong>
+                    </span>
 
-                    <div class="me-2 text-end d-none d-md-block">
-                        <small class="text-muted d-block" style="font-size: 10px;">Halo,</small>
-                        <span class="fw-bold text-dark" style="font-size: 14px;"><?= $_SESSION['nama_admin']; ?></span>
-                    </div>
+                    <span class="user-avatar" aria-hidden="true">
+                        <i class="bi bi-person-fill"></i>
+                    </span>
+                    <i class="bi bi-chevron-down profile-trigger-chevron" aria-hidden="true"></i>
+                </button>
 
-                    <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center"
-                        style="width:42px;height:42px;">
-                        <i class="bi bi-person-fill fs-5"></i>
-                    </div>
-                </a>
-
-                <ul class="dropdown-menu dropdown-menu-end shadow p-3"
-                    aria-labelledby="dropdownUser"
-                    style="min-width: 260px; border-radius: 12px;">
-
-                    <li class="text-center mb-2">
-                        <div class="mb-2">
-                             <div class="rounded-circle bg-light d-inline-flex justify-content-center align-items-center" style="width: 60px; height: 60px;">
-                                <i class="bi bi-person fs-2 text-secondary"></i>
-                             </div>
-                        </div>
-                        <strong><?= $_SESSION['nama_admin']; ?></strong><br>
-                        
-                        <span class="badge bg-primary mb-1"><?= ucfirst($_SESSION['level']); ?></span>
-                        
-                        <div class="small text-muted">NIP: <?= isset($_SESSION['nip']) ? $_SESSION['nip'] : '-'; ?></div>
+                <ul class="dropdown-menu dropdown-menu-end profile-menu"
+                    aria-labelledby="dropdownUser">
+                    <li class="profile-menu-summary">
+                        <span class="profile-menu-avatar" aria-hidden="true">
+                            <i class="bi bi-person-fill"></i>
+                        </span>
+                        <span class="profile-menu-identity">
+                            <strong><?= $profile_name; ?></strong>
+                            <span class="profile-menu-role"><?= $profile_role; ?></span>
+                            <small><i class="bi bi-person-vcard"></i>NIP <?= $profile_nip; ?></small>
+                        </span>
                     </li>
 
-                    <li><hr class="dropdown-divider"></li>
-
-                    <li>
-                        <a class="dropdown-item py-2" href="<?= $base_url ?>pages/profile.php">
-                            <i class="bi bi-person-gear me-2 text-primary"></i> Edit Profil
+                    <li class="profile-menu-actions">
+                        <a class="dropdown-item profile-menu-item" href="<?= $base_url ?>pages/profile.php">
+                            <span class="profile-menu-icon"><i class="bi bi-person-gear"></i></span>
+                            <span>
+                                <strong>Edit Profil</strong>
+                                <small>Ubah identitas dan password</small>
+                            </span>
+                            <i class="bi bi-chevron-right profile-menu-arrow" aria-hidden="true"></i>
                         </a>
-                    </li>
 
-                    <li>
-                        <a class="dropdown-item py-2 text-danger" href="<?= $base_url ?>proses/logout.php" onclick="return confirm('Yakin ingin logout?')">
-                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        <a class="dropdown-item profile-menu-item profile-menu-logout" href="<?= $base_url ?>proses/logout.php" onclick="return confirm('Yakin ingin logout?')">
+                            <span class="profile-menu-icon"><i class="bi bi-box-arrow-right"></i></span>
+                            <span>
+                                <strong>Logout</strong>
+                                <small>Keluar dari aplikasi</small>
+                            </span>
+                            <i class="bi bi-chevron-right profile-menu-arrow" aria-hidden="true"></i>
                         </a>
                     </li>
                 </ul>

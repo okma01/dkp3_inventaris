@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_login();
+
 require('../library/fpdf.php');
 include '../config/koneksi.php';
 

@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_roles(['admin', 'petugas']);
+
 include '../config/koneksi.php';
 
 if (isset($_POST['simpan'])) {
@@ -7,6 +9,14 @@ if (isset($_POST['simpan'])) {
     $kategori = $_POST['id_kategori'];
     $satuan = $_POST['satuan'];
     $stok = $_POST['stok'];
+
+    // Cek duplikat nama barang (case-insensitive)
+    $nama_escaped = mysqli_real_escape_string($koneksi, $nama);
+    $cek_duplikat = mysqli_query($koneksi, "SELECT id_barang FROM barang WHERE LOWER(nama_barang) = LOWER('$nama_escaped')");
+    if (mysqli_num_rows($cek_duplikat) > 0) {
+        echo "<script>alert('Gagal! Barang dengan nama \"$nama\" sudah ada di database.'); window.location='../pages/barang.php';</script>";
+        exit;
+    }
 
     // LOGIKA UPLOAD FOTO
     $nama_foto = null; // Default kosong

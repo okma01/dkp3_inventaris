@@ -143,8 +143,9 @@
             .brand-logo img { width: 80px; }
         }
     </style>
+    <link rel="stylesheet" href="design/app-modern.css">
 </head>
-<body>
+<body class="login-page">
 
     <div class="container-fluid p-0">
         <div class="login-container">
@@ -153,15 +154,20 @@
                 <div class="brand-logo">
                     <img src="assets/logo.png" alt="Logo Banjarbaru"> 
                 </div>
-                <h3 class="fw-bold mb-1">DKP3 INVENTARIS</h3>
-                <p class="text-white-50 small mb-0">Dinas Ketahanan Pangan, Pertanian <br> dan Perikanan Kota Banjarbaru</p>
+                <h1 class="fw-bold mb-3 display-5">DKP3 Inventaris</h1>
+                <p class="text-white-50 mb-4 fs-6">Dinas Ketahanan Pangan, Pertanian dan Perikanan Kota Banjarbaru</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-white text-success">Monitoring stok</span>
+                    <span class="badge bg-white text-success">Transaksi barang</span>
+                    <span class="badge bg-white text-success">Laporan PDF</span>
+                </div>
             </div>
 
             <div class="login-form-side">
                 <div class="login-form-wrapper">
                     <div class="mb-4">
-                        <h2 class="fw-bold text-dark">Selamat Datang!</h2>
-                        <p class="text-muted">Silakan masukkan akun Anda untuk melanjutkan.</p>
+                        <h2 class="fw-bold text-dark">Masuk ke Sistem</h2>
+                        <p class="text-muted">Gunakan akun yang sudah terdaftar untuk mengelola inventaris.</p>
                     </div>
 
                     <?php 
@@ -191,12 +197,12 @@
 
                         <div class="d-grid mb-4">
                             <button type="submit" class="btn btn-login text-white btn-lg">
-                                MASUK SEKARANG <i class="fas fa-arrow-right ms-2 small"></i>
+                                Masuk Sekarang <i class="fas fa-arrow-right ms-2 small"></i>
                             </button>
                         </div>
 
                         <div class="text-center">
-                            <a href="index1.php" class="btn-back">
+                            <a href="landing.php" class="btn-back">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali ke Halaman Utama
                             </a>
                         </div>

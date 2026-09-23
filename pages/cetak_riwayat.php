@@ -1,9 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['status']) || $_SESSION['status'] !== 'login') {
-    header('Location: ../login.php?pesan=belum_login');
-    exit;
-}
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_roles(['admin', 'petugas']);
 
 require_once __DIR__ . '/../config/koneksi.php';
 require_once __DIR__ . '/../library/fpdf.php';
@@ -72,8 +69,12 @@ $pdf->Cell(47, 8, 'Tanggal', 1, 1, 'C', true);
 // Isi Tabel
 $pdf->SetFont('Times', '', 10);
 $sql = "SELECT id_riwayat, nama_user, nip, nama_barang, jenis_aktivitas, jumlah, tanggal
-        FROM riwayat_barang
-        ORDER BY tanggal DESC, id_riwayat DESC";
+        FROM riwayat_barang";
+// Samakan cakupan ekspor dengan hak akses pada halaman riwayat.
+if ($_SESSION['level'] !== 'admin') {
+    $sql .= " WHERE jenis_aktivitas IN ('masuk', 'keluar')";
+}
+$sql .= " ORDER BY tanggal DESC, id_riwayat DESC";
 $result = mysqli_query($koneksi, $sql);
 
 $no = 1;

@@ -1,5 +1,5 @@
 <?php
-// index1.php - Landing Page Modern
+// Landing page - Inventaris DKP3
 ?>
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
@@ -49,7 +49,6 @@
         
         .hero-pattern {
             background-color: #1e7256;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
     </style>
 </head>
@@ -77,16 +76,13 @@
 
     <section class="relative min-h-screen flex items-center justify-center hero-pattern overflow-hidden">
         <div class="absolute inset-0 z-0">
-             <img src="assets/bg_gedung.png" alt="Kantor DKP3" class="w-full h-full object-cover opacity-20" onerror="this.style.display='none'">
-            <div class="absolute inset-0 bg-gradient-to-t from-emerald-900 via-emerald-800/80 to-emerald-900/90"></div>
+             <img src="assets/bg_gedung.png" alt="Kantor DKP3" class="w-full h-full object-cover opacity-60" onerror="this.style.display='none'">
+            <div class="absolute inset-0 bg-gradient-to-t from-emerald-900/90 via-emerald-800/50 to-emerald-900/60"></div>
         </div>
-
-        <div class="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
 
         <div class="container mx-auto px-6 relative z-10 text-center pt-20">
             <span class="inline-block py-1 px-3 rounded-full bg-emerald-700/50 border border-emerald-500 text-emerald-100 text-xs font-semibold mb-6 backdrop-blur-sm" data-aos="fade-down">
-                ✨ Sistem Manajemen Terpadu
+                Sistem Manajemen Terpadu
             </span>
             
             <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight" data-aos="fade-up" data-aos-delay="100">

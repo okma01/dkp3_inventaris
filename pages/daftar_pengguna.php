@@ -1,4 +1,8 @@
-<?php include '../layout/header.php'; ?>
+<?php
+require_once __DIR__ . '/../config/auth.php';
+dkp_require_roles(['admin']);
+include '../layout/header.php';
+?>
 <?php include '../layout/sidebar.php'; ?>
 
 <style>

@@ -144,9 +144,7 @@
                             <th>Kategori</th>
                             <th>Satuan</th>
                             <th class="text-center">Stok</th>
-                            <?php if($_SESSION['level'] != 'pimpinan') : ?>
                             <th class="text-center">Aksi</th>
-                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -195,15 +193,23 @@
                                     <?php endif; ?>
                                 </td>
                                 
-                                <?php if($_SESSION['level'] != 'pimpinan') : ?>
                                 <td class="text-center">
+                                    <a href="detail_barang.php?id=<?= $row['id_barang']; ?>" 
+                                       class="btn-action bg-info bg-opacity-10 text-info me-1" title="Detail">
+                                       <i class="bi bi-eye"></i>
+                                    </a>
+                                    <?php if($_SESSION['level'] != 'pimpinan') : ?>
+                                    <a href="edit_data_barang.php?id=<?= $row['id_barang']; ?>" 
+                                       class="btn-action bg-warning bg-opacity-10 text-warning me-1" title="Edit">
+                                       <i class="bi bi-pencil-square"></i>
+                                    </a>
                                     <a href="../proses/hapus_barang.php?id=<?= $row['id_barang']; ?>" 
                                        class="btn-action bg-danger bg-opacity-10 text-danger" 
                                        onclick="return confirm('Hapus barang ini permanen?')" title="Hapus">
                                        <i class="bi bi-trash"></i>
                                     </a>
+                                    <?php endif; ?>
                                 </td>
-                                <?php endif; ?>
                             </tr>
                             <?php 
                             } 

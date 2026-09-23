@@ -1,347 +1,232 @@
 <?php include 'layout/header.php'; ?>
 <?php include 'layout/sidebar.php'; ?>
 
-<style>
-    .card-stat {
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .card-stat::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    .card-stat:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-    }
-    
-    .card-stat:hover::before {
-        opacity: 1;
-    }
-    
-    .icon-wrapper {
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 15px;
-        transition: transform 0.3s ease;
-    }
-    
-    .card-stat:hover .icon-wrapper {
-        transform: scale(1.1) rotate(5deg);
-    }
-    
-    .badge-date {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        padding: 12px 24px !important;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-    
-    .text-primary-green {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .btn-quick-access {
-        border: 2px solid;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        border-radius: 12px;
-    }
-    
-    .btn-quick-access:hover {
-        transform: translateX(10px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .chart-card {
-        border-radius: 15px;
-        transition: all 0.3s ease;
-    }
-    
-    .chart-card:hover {
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    }
-    
-    .card-header-custom {
-        border-bottom: 3px solid #10b981;
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(255,255,255,1) 100%) !important;
-    }
-</style>
-
-<div class="container-fluid p-4">
-    
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="text-primary-green fw-bold mb-2">
-                <i class="bi bi-speedometer2 me-2"></i>Dashboard
-            </h2>
-        </div>
-        <div>
-            <span class="badge badge-date text-white">
-                <i class="bi bi-calendar-check me-2"></i><?= date('d F Y'); ?>
-            </span>
-        </div>
-    </div>
-
-    <div class="row mb-4 g-4">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm card-stat">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="text-muted mb-1 small text-uppercase fw-bold">Total Barang</p>
-                            <h3 class="mb-0 fw-bold text-success">
-                                <?php echo mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang")); ?>
-                            </h3>
-                            <small class="text-muted">Item Terdaftar</small>
-                        </div>
-                        <div class="icon-wrapper" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                            <i class="bi bi-box-seam fs-3 text-white"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm card-stat">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="text-muted mb-1 small text-uppercase fw-bold">Riwayat Masuk</p>
-                            <h3 class="mb-0 fw-bold text-info">
-                                <?php echo mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang_masuk")); ?>
-                            </h3>
-                            <small class="text-muted">Total Transaksi</small>
-                        </div>
-                        <div class="icon-wrapper" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
-                            <i class="bi bi-arrow-down-circle fs-3 text-white"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm card-stat">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="text-muted mb-1 small text-uppercase fw-bold">Riwayat Keluar</p>
-                            <h3 class="mb-0 fw-bold text-warning">
-                                <?php echo mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang_keluar")); ?>
-                            </h3>
-                            <small class="text-muted">Total Transaksi</small>
-                        </div>
-                        <div class="icon-wrapper" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                            <i class="bi bi-arrow-up-circle fs-3 text-white"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <?php 
-                $cek_tipis = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang WHERE stok < 5")); 
-            ?>
-            <div class="card border-0 shadow-sm card-stat">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="text-muted mb-1 small text-uppercase fw-bold">Stok Menipis</p>
-                            <h3 class="mb-0 fw-bold text-danger">
-                                <?= $cek_tipis; ?>
-                            </h3>
-                            <small class="text-muted">Perlu Restok</small>
-                        </div>
-                        <div class="icon-wrapper" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                            <i class="bi bi-exclamation-triangle fs-3 text-white"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-8">
-            <div class="card border-0 shadow-sm chart-card h-100">
-                <div class="card-header card-header-custom py-3">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-bar-chart-fill text-success me-2 fs-5"></i>
-                        <h6 class="mb-0 fw-bold text-success">Statistik Stok per Kategori</h6>
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <canvas id="stokChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <?php if($_SESSION['level'] != 'pimpinan') : ?>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm chart-card h-100">
-                <div class="card-header card-header-custom py-3">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-lightning-charge-fill text-success me-2 fs-5"></i>
-                        <h6 class="mb-0 fw-bold text-success">Akses Cepat</h6>
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <div class="d-grid gap-3">
-                        <a href="pages/barang_masuk.php" class="btn btn-quick-access btn-outline-success text-start p-3">
-                            <i class="bi bi-plus-circle me-2"></i> Input Barang Masuk
-                        </a>
-                        <a href="pages/barang_keluar.php" class="btn btn-quick-access btn-outline-warning text-start p-3">
-                            <i class="bi bi-dash-circle me-2"></i> Input Barang Keluar
-                        </a>
-                        <a href="pages/laporan.php" class="btn btn-quick-access btn-outline-info text-start p-3">
-                            <i class="bi bi-printer me-2"></i> Cetak Laporan
-                        </a>
-                        <a href="pages/barang.php" class="btn btn-quick-access btn-outline-primary text-start p-3">
-                            <i class="bi bi-box-seam me-2"></i> Kelola Data Barang
-                        </a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
 <?php
-// Ambil data kategori dan jumlah total stoknya
-$labels_kategori = "";
-$data_stok = "";
+$total_barang = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang"));
+$total_masuk = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang_masuk"));
+$total_keluar = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang_keluar"));
+$stok_tipis = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM barang WHERE stok < 5"));
 
-$query_chart = mysqli_query($koneksi, "SELECT k.nama_kategori, SUM(b.stok) as total_stok 
-                                       FROM kategori k 
-                                       LEFT JOIN barang b ON k.id_kategori = b.id_kategori 
-                                       GROUP BY k.id_kategori");
+$total_stok = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COALESCE(SUM(stok), 0) AS total FROM barang"))['total'];
+$barang_terbaru = mysqli_query($koneksi, "SELECT b.*, k.nama_kategori
+                                          FROM barang b
+                                          LEFT JOIN kategori k ON b.id_kategori = k.id_kategori
+                                          ORDER BY b.id_barang DESC
+                                          LIMIT 5");
+
+$chart_labels = [];
+$chart_data = [];
+$query_chart = mysqli_query($koneksi, "SELECT k.nama_kategori, COALESCE(SUM(b.stok), 0) AS total_stok
+                                       FROM kategori k
+                                       LEFT JOIN barang b ON k.id_kategori = b.id_kategori
+                                       GROUP BY k.id_kategori, k.nama_kategori
+                                       ORDER BY k.nama_kategori ASC");
 
 while ($chart = mysqli_fetch_assoc($query_chart)) {
-    $nama = $chart['nama_kategori'];
-    $total = $chart['total_stok'] == NULL ? 0 : $chart['total_stok'];
-    
-    $labels_kategori .= "'$nama',";
-    $data_stok .= "$total,";
+    $chart_labels[] = $chart['nama_kategori'];
+    $chart_data[] = (int) $chart['total_stok'];
 }
 ?>
 
+<div class="container-fluid p-4">
+    <section class="dashboard-hero mb-4">
+        <div>
+            <span class="dashboard-eyebrow">Dashboard Inventaris</span>
+            <h1>Ringkasan stok hari ini</h1>
+            <p>Monitoring barang, transaksi masuk-keluar, dan kebutuhan restok dalam satu tampilan.</p>
+        </div>
+        <div class="dashboard-hero-meta">
+            <div class="small text-white-50">Total stok tersedia</div>
+            <strong><?= number_format($total_stok); ?></strong>
+            <span><?= date('d F Y'); ?></span>
+        </div>
+    </section>
+
+    <div class="dashboard-stat-grid mb-4">
+        <article class="dashboard-stat-card">
+            <div>
+                <span>Total Barang</span>
+                <strong><?= number_format($total_barang); ?></strong>
+                <small>Item terdaftar</small>
+            </div>
+            <i class="bi bi-box-seam"></i>
+        </article>
+
+        <article class="dashboard-stat-card stat-info">
+            <div>
+                <span>Barang Masuk</span>
+                <strong><?= number_format($total_masuk); ?></strong>
+                <small>Total transaksi</small>
+            </div>
+            <i class="bi bi-arrow-down-circle"></i>
+        </article>
+
+        <article class="dashboard-stat-card stat-warning">
+            <div>
+                <span>Barang Keluar</span>
+                <strong><?= number_format($total_keluar); ?></strong>
+                <small>Total transaksi</small>
+            </div>
+            <i class="bi bi-arrow-up-circle"></i>
+        </article>
+
+        <article class="dashboard-stat-card stat-danger">
+            <div>
+                <span>Stok Menipis</span>
+                <strong><?= number_format($stok_tipis); ?></strong>
+                <small>Perlu restok</small>
+            </div>
+            <i class="bi bi-exclamation-triangle"></i>
+        </article>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-xl-8">
+            <div class="card dashboard-panel h-100">
+                <div class="card-header-custom">
+                    <div>
+                        <h4 class="mb-0">Statistik Stok per Kategori</h4>
+                        <small class="text-muted">Perbandingan jumlah stok pada setiap kategori barang</small>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="dashboard-chart-wrap">
+                        <canvas id="stokChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card dashboard-panel h-100">
+                <div class="card-header-custom">
+                    <div>
+                        <h4 class="mb-0">Akses Cepat</h4>
+                        <small class="text-muted">Menu yang sering digunakan</small>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="quick-action-list">
+                        <?php if($_SESSION['level'] != 'pimpinan') : ?>
+                            <a href="pages/barang_masuk.php">
+                                <i class="bi bi-plus-circle"></i>
+                                <span>Input Barang Masuk</span>
+                            </a>
+                            <a href="pages/barang_keluar.php">
+                                <i class="bi bi-dash-circle"></i>
+                                <span>Input Barang Keluar</span>
+                            </a>
+                            <a href="pages/barang.php">
+                                <i class="bi bi-box-seam"></i>
+                                <span>Kelola Data Barang</span>
+                            </a>
+                        <?php endif; ?>
+                        <a href="pages/laporan.php">
+                            <i class="bi bi-printer"></i>
+                            <span>Cetak Laporan</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card dashboard-panel">
+                <div class="card-header-custom">
+                    <div>
+                        <h4 class="mb-0">Barang Terbaru</h4>
+                        <small class="text-muted">Lima data barang terakhir yang masuk ke sistem</small>
+                    </div>
+                    <a href="pages/barang.php" class="btn btn-outline-success">
+                        <i class="bi bi-arrow-right me-1"></i>Lihat Semua
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table mb-0 align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nama Barang</th>
+                                    <th>Kategori</th>
+                                    <th>Satuan</th>
+                                    <th class="text-end">Stok</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if(mysqli_num_rows($barang_terbaru) > 0): ?>
+                                    <?php while ($row = mysqli_fetch_assoc($barang_terbaru)): ?>
+                                        <tr>
+                                            <td class="fw-semibold"><?= htmlspecialchars($row['nama_barang']); ?></td>
+                                            <td>
+                                                <span class="badge bg-light text-success border border-success-subtle">
+                                                    <?= htmlspecialchars($row['nama_kategori'] ?: 'Tanpa Kategori'); ?>
+                                                </span>
+                                            </td>
+                                            <td class="text-muted"><?= htmlspecialchars($row['satuan']); ?></td>
+                                            <td class="text-end">
+                                                <?php if((int) $row['stok'] < 5): ?>
+                                                    <span class="badge bg-danger"><?= number_format($row['stok']); ?></span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-success"><?= number_format($row['stok']); ?></span>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-5">Belum ada data barang.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-  const ctx = document.getElementById('stokChart');
+const ctx = document.getElementById('stokChart');
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: [<?= $labels_kategori; ?>],
-      datasets: [{
-        label: 'Jumlah Stok',
-        data: [<?= $data_stok; ?>],
-        backgroundColor: [
-          'rgba(16, 185, 129, 0.8)',   // Hijau primary
-          'rgba(6, 182, 212, 0.8)',    // Cyan
-          'rgba(34, 197, 94, 0.8)',    // Hijau terang
-          'rgba(20, 184, 166, 0.8)',   // Teal
-          'rgba(5, 150, 105, 0.8)',    // Hijau gelap
-          'rgba(14, 165, 233, 0.8)',   // Biru
-          'rgba(16, 185, 129, 0.6)',   // Hijau transparan
-        ],
-        borderColor: [
-          'rgba(16, 185, 129, 1)',
-          'rgba(6, 182, 212, 1)',
-          'rgba(34, 197, 94, 1)',
-          'rgba(20, 184, 166, 1)',
-          'rgba(5, 150, 105, 1)',
-          'rgba(14, 165, 233, 1)',
-          'rgba(16, 185, 129, 1)',
-        ],
-        borderWidth: 2,
-        borderRadius: 8,
-        borderSkipped: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom',
-          labels: {
-            padding: 15,
-            font: {
-              size: 12,
-              family: "'Inter', sans-serif"
-            }
-          }
+if (ctx) {
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode($chart_labels); ?>,
+            datasets: [{
+                label: 'Jumlah Stok',
+                data: <?= json_encode($chart_data); ?>,
+                backgroundColor: ['#1f7a5c', '#19a7ce', '#f2b84b', '#5b8def', '#ef5350', '#2fbf71'],
+                borderRadius: 12,
+                borderSkipped: false
+            }]
         },
-        tooltip: {
-          backgroundColor: 'rgba(16, 185, 129, 0.9)',
-          padding: 12,
-          cornerRadius: 8,
-          titleFont: {
-            size: 14,
-            weight: 'bold'
-          },
-          bodyFont: {
-            size: 13
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)',
-            drawBorder: false
-          },
-          ticks: {
-            font: {
-              size: 11
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#17211d',
+                    padding: 12,
+                    cornerRadius: 10
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(23, 33, 29, 0.08)' },
+                    ticks: { precision: 0 }
+                },
+                x: {
+                    grid: { display: false }
+                }
             }
-          }
-        },
-        x: {
-          grid: {
-            display: false,
-            drawBorder: false
-          },
-          ticks: {
-            font: {
-              size: 11
-            }
-          }
         }
-      },
-      animation: {
-        duration: 1000,
-        easing: 'easeInOutQuart'
-      }
-    }
-  });
+    });
+}
 </script>
 
 <?php include 'layout/footer.php'; ?>
